@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+* {
+    box-sizing: border-box;
+}
+
+input[type="button"],
+input[type="submit"] {
+    padding: 5px 10px;
+    border: 1px solid #333;
+    background-color: transparent;
+}
+
+h2,
+h4,
+ul,
+li,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    flex-basis: 100%;
+    padding-left: 30px;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+h4 {
+    margin-bottom: 1rem;
+}
+
+.wrapper {
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.subWrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form.search {
+    width: 100%;
+    padding-left: 30px;
+}
+
+.contentsCol {
+    padding: 30px;
+    flex-basis: 40%;
+}
+
+.contentsCol li {
+    margin-bottom: 10px;
+}
+
+.contentsCol li span {
+    cursor: pointer;
+}
+
+.contentsCol li img {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.random {
+    padding: 30px;
+    width: 100%;
+}
+
+.recipeCol {
+    padding: 30px;
+    flex-basis: 60%;
+}
+
+.recipeCol img,
+.random img {
+    max-width: 80%;
+    display: block;
+}
+
+.ingredients {
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+}
+
+.ingredients span {
+    padding: 10px 5px;
+    flex-basis: 50%;
+    /* border: 1px solid salmon; */
+}
+
+.instructions {
+    text-align: left;
+}
+
+.instructions p {
+    margin-bottom: 10px;
+}
+
+.thumb img {
+    width: 100px;
+}
