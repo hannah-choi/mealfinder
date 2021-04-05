@@ -38,7 +38,9 @@ h1 {
     padding-left: 30px;
 }
 
-h2 {
+h3 {
+    margin-top: 20px;
+    margin-left: 30px;
     margin-bottom: 5px;
 }
 
@@ -82,8 +84,15 @@ form.search {
 }
 
 .random {
-    padding: 30px;
+    padding: 0;
     width: 100%;
+    visibility: hidden;
+}
+
+.random.visible {
+    padding: 0 30px 30px 30px;
+    width: 100%;
+    visibility: visible;
 }
 
 .recipeCol {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import SubWrapper from "./components/SubWrapper";
@@ -7,6 +7,8 @@ import SearchListItem from "./components/SearchListItem";
 function App() {
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
+    const [recipe, setRecipe] = useState("");
+    const [condition, setCondition] = useState(null);
 
     const submitHandler = e => {
         e.preventDefault();
@@ -14,30 +16,31 @@ function App() {
             alert("Type something");
             return;
         } else {
+            setCondition("search");
             getData(e.target.search.value);
             e.target.search.value = "";
         }
     };
 
     const getData = input => {
+        setRecipe("");
         fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${input}`)
             .then(res => res.json())
             .then(result => {
                 setTitle(`Search results for ${input}`);
-                result.meals === null
-                    ? //clearDom([randomDiv, recipeUl]);
-                      setContents(<p>No result, please try again</p>)
-                    : setContents(
-                          result.meals.map(item => (
-                              <SearchListItem
-                                  item={item}
-                                  key={item.idMeal}
-                                  getDataByID={getDataByID}
-                              />
-                          ))
-                      );
-                // clearDom([randomDiv]);
-                // recipeUl.innerHTML = searchResult + listItem;
+                if (result.meals === null) {
+                    setContents(<p>No result, please try again</p>);
+                } else {
+                    setContents(
+                        result.meals.map(item => (
+                            <SearchListItem
+                                item={item}
+                                key={item.idMeal}
+                                getDataByID={getDataByID}
+                            />
+                        ))
+                    );
+                }
             });
     };
 
@@ -55,6 +58,7 @@ function App() {
 
     //get a random meal
     const getRandomMeal = () => {
+        setCondition("random");
         fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
             .then(res => res.json())
             .then(result => {
@@ -76,41 +80,49 @@ function App() {
             }
         }
 
-        const getIngredients = ingredientsArr
-            .map(ing =>
-                ing.amount !== null
-                    ? isNaN(ing.amount)
-                        ? `<span>${ing.name} ${ing.amount}</span>`
-                        : `<span>${ing.amount} ${ing.name}</span>`
-                    : `<span>${ing.name}</span>`
+        const getIngredients = ingredientsArr.map((ing, i) =>
+            ing.amount !== null ? (
+                isNaN(ing.amount) ? (
+                    <span key={i}>
+                        {ing.name} {ing.amount}
+                    </span>
+                ) : (
+                    <span key={i}>
+                        {ing.amount} {ing.name}
+                    </span>
+                )
+            ) : (
+                <span key={i}>{ing.name}</span>
             )
-            .join("");
+        );
 
         const instructions = data.strInstructions
             .split("\r\n")
-            .map((item, i) => {
-                if (item.length > 4) {
-                    return `<p>${item}</p>`;
-                }
-            })
-            .join("");
+            .map((item, i) => (item.length > 4 ? <p key={i}>{item}</p> : ""));
 
-        const recipe = `
-                    <h2>${data.strMeal}</h2>
-                    <h4>${data.strArea}</h4>
-                    <img src=${data.strMealThumb}>
-                    <div class="ingredients">${getIngredients}</div>
-                    <div class="instructions">${instructions}</div>
-                    `;
+        const recipe = (
+            <>
+                <h2>{data.strMeal}</h2>
+                <h4>{data.strArea}</h4>
+                <img src={data.strMealThumb} alt={data.strMeal} />
+                <div className="ingredients">{getIngredients}</div>
+                <div className="instructions">{instructions}</div>
+            </>
+        );
 
-        //When it's from search result
+        setRecipe(recipe);
     };
 
     return (
         <div className="App">
             <h1>Meal finder</h1>
-            <Form submitHandler={submitHandler} />
-            <SubWrapper title={title} contents={contents} />
+            <Form submitHandler={submitHandler} getRandomMeal={getRandomMeal} />
+            <SubWrapper
+                title={title}
+                contents={contents}
+                recipe={recipe}
+                condition={condition}
+            />
         </div>
     );
 }
